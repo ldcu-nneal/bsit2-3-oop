@@ -1,51 +1,55 @@
-import java.util.Scanner;
-
-public class Main {
+public class LabActivity3 {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Book book1 = new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223);
+        Book book2 = new Book("Harry Potter and the Chamber of Secrets", "J.K. Rowling", 251);
+        Book book3 = new Book("Harry Potter and the Prisoner of Azkaban", "J.K. Rowling", 317);
 
-        System.out.println("STUDENT INFORMATION");
-        System.out.print("Student ID: ");
-        String studentId = scanner.nextLine();
-        System.out.print("First Name: ");
-        String firstName = scanner.nextLine();
-        System.out.print("Last Name: ");
-        String lastName = scanner.nextLine();
-        System.out.print("Course: ");
-        String course = scanner.nextLine();
-        System.out.print("Section: ");
-        String section = scanner.nextLine();
+        System.out.println("\nBook 1:");
+        book1.displayInfo();
+        book1.borrowBook();
+        book1.returnBook();
 
-        System.out.println("\nSTUDENT INFORMATION");
-        System.out.println("Student ID: " + studentId);
-        System.out.println("Student Name: " + firstName + " " + lastName);
-        System.out.println("Course: " + course);
-        System.out.println("Section: " + section);
+        System.out.println("\nBook 2:");
+        book2.displayInfo();
+        book2.borrowBook();
+        book2.returnBook();
 
-        System.out.println("\nEnter Student Scores: ");
-        System.out.print("Midterm Exam Score (out of 100): ");
-        int midtermExam = scanner.nextInt();
-        System.out.print("Final Exam Score (out of 100): ");
-        int finalExam = scanner.nextInt();
-        System.out.print("Project Score ( out of 100): ");
-        int project = scanner.nextInt();
-        System.out.print("Attendance Percentage (out of 100): ");
-        int attendance = scanner.nextInt();
+        System.out.println("\nBook 3:");
+        book3.displayInfo();
+        book3.borrowBook();
+        book3.returnBook();
+    }
+}
 
-        int totalScore = midtermExam + finalExam + project + attendance;
-        double average = totalScore / 400.0 * 100;
+class Book {
+    private String title;
+    private String author;
+    private int pages;
+    private boolean isAvailable;
 
-        String status = (average >= 75) ? "PASSED" : "FAILED";
+    public Book(String title, String author, int pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.isAvailable = true;
+        System.out.println("A new book '" + title + "' by " + author + " has been added to the library!");
+    }
 
-        System.out.println("\nSTUDENT SCORE");
-        System.out.println("Midterm Exam Score: " + midtermExam);
-        System.out.println("Final Exam Score: " + finalExam);
-        System.out.println("Project Score: " + project);
-        System.out.println("Attendance Score: " + attendance);
-        System.out.printf("\nAverage Score: %.2f\n", average);
-        System.out.println("Remarks: " + status);
+    public void displayInfo() {
+        System.out.println("\nBook Information:");
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("Pages: " + pages);
+        System.out.println("Available: " + (isAvailable ? "Yes" : "No"));
+    }
 
-        scanner.close();
+    public void borrowBook() {
+        isAvailable = false;
+        System.out.println("Book Borrowed");
+    }
 
+    public void returnBook() {
+        isAvailable = true;
+        System.out.println("Book Returned");
     }
 }
