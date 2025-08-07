@@ -1,51 +1,108 @@
-import java.util.Scanner;
+class Student {
+    String name;
+    int age;
+    String course;
+    double grade1;
+    double grade2;
+    double grade3;
 
+
+    public Student(String name, int age, String course, double grade1, double grade2, double grade3) {
+        this.name = name;
+        this.age = age;
+        this.course = course;
+        this.grade1 = grade1;
+        this.grade2 = grade2;
+        this.grade3 = grade3;
+    }
+
+    public void displayInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Course: " + course);
+        System.out.println("Grades: " + " " + grade1 + ", " + grade2 +  ", " + grade3);
+    }
+
+
+    public double calculateAverage() {
+        return (grade1 + grade2 + grade3) / 3;
+    }
+
+
+    public String getLetterGrade() {
+        double average = calculateAverage();
+        if (average >= 90) {
+            return "A";
+        } else if (average >= 80) {
+            return "B";
+        } else if (average >= 70) {
+            return "C";
+        } else if (average >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+
+
+    public boolean isPassing() {
+        return calculateAverage() >= 70;
+    }
+}
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("STUDENT INFORMATION");
-        System.out.print("Student ID: ");
-        String studentId = scanner.nextLine();
-        System.out.print("First Name: ");
-        String firstName = scanner.nextLine();
-        System.out.print("Last Name: ");
-        String lastName = scanner.nextLine();
-        System.out.print("Course: ");
-        String course = scanner.nextLine();
-        System.out.print("Section: ");
-        String section = scanner.nextLine();
+        Student student1 = new Student("John Doe", 99, "BSIT", 95, 92, 91);
+        Student student2 = new Student("Jane Doe", 88, "BSIT", 80, 84, 87);
+        Student student3 = new Student("CIT Doe", 77, "BSIT", 60, 60, 60);
 
-        System.out.println("\nSTUDENT INFORMATION");
-        System.out.println("Student ID: " + studentId);
-        System.out.println("Student Name: " + firstName + " " + lastName);
-        System.out.println("Course: " + course);
-        System.out.println("Section: " + section);
+        int passingCount = 0;
 
-        System.out.println("\nEnter Student Scores: ");
-        System.out.print("Midterm Exam Score (out of 100): ");
-        int midtermExam = scanner.nextInt();
-        System.out.print("Final Exam Score (out of 100): ");
-        int finalExam = scanner.nextInt();
-        System.out.print("Project Score ( out of 100): ");
-        int project = scanner.nextInt();
-        System.out.print("Attendance Percentage (out of 100): ");
-        int attendance = scanner.nextInt();
+        System.out.println("");
+        student1.displayInfo();
+        double avg1 = student1.calculateAverage();
+        System.out.println("Average: " + avg1);
+        String grade1 = student1.getLetterGrade();
+        System.out.println("Letter Grade: " + grade1);
+        boolean pass1 = student1.isPassing();
+        if (pass1) {
+            System.out.println("Status: PASSING");
+            passingCount++;
+        } else {
+            System.out.println("Status: FAILING");
+        }
 
-        int totalScore = midtermExam + finalExam + project + attendance;
-        double average = totalScore / 400.0 * 100;
 
-        String status = (average >= 75) ? "PASSED" : "FAILED";
+        System.out.println("");
+        student2.displayInfo();
+        double avg2 = student2.calculateAverage();
+        System.out.println("Average: " + avg2);
+        String grade2 = student2.getLetterGrade();
+        System.out.println("Letter Grade: " + grade2);
+        boolean pass2 = student2.isPassing();
+        if (pass2) {
+            System.out.println("Status: PASSING");
+            passingCount++;
+        } else {
+            System.out.println("Status: FAILING");
+        }
 
-        System.out.println("\nSTUDENT SCORE");
-        System.out.println("Midterm Exam Score: " + midtermExam);
-        System.out.println("Final Exam Score: " + finalExam);
-        System.out.println("Project Score: " + project);
-        System.out.println("Attendance Score: " + attendance);
-        System.out.printf("\nAverage Score: %.2f\n", average);
-        System.out.println("Remarks: " + status);
 
-        scanner.close();
+        System.out.println("");
+        student3.displayInfo();
+        double avg3 = student3.calculateAverage();
+        System.out.println("Average: " + avg3);
+        String grade3 = student3.getLetterGrade();
+        System.out.println("Letter Grade: " + grade3);
+        boolean pass3 = student3.isPassing();
+        if (pass3) {
+            System.out.println("Status: PASSING");
+            passingCount++;
+        } else {
+            System.out.println("Status: FAILING");
+        }
 
+        System.out.println("");
+        System.out.println("Summary: " + passingCount + " out of 3 students are passing.");
     }
 }
