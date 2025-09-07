@@ -1,51 +1,121 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class Main {
+public class PostManager {
+
+    public int calculateEngagement(int... interactions) {
+        if (interactions == null || interactions.length == 0) {
+            return 0;
+        }
+
+        int total = 0;
+        for (int interaction : interactions) {
+            total += interaction;
+        }
+        return total;
+    }
+
+    public String getCategoryRating(int engagementScore) {
+        if (engagementScore >= 1000) {
+            return "Viral";
+        } else if (engagementScore >= 500) {
+            return "Popular";
+        } else if (engagementScore >= 100) {
+            return "Good";
+        } else if (engagementScore >= 50) {
+            return "Low";
+        } else {
+            return "Poor";
+        }
+    }
+
+    public void displayPostStats(String postTitle, int engagementScore) {
+        System.out.println("Post: " + postTitle);
+        System.out.println("Engagement Score: " + engagementScore);
+    }
+
+    public void displayPostStats(String postTitle, int engagementScore, String category) {
+        System.out.println("Post: " + postTitle);
+        System.out.println("Engagement Score: " + engagementScore);
+        System.out.println("Category: " + category);
+    }
+
+    public ArrayList<String> manageHashtags(String[] hashtags) {
+        String[] fixedHashtags = new String[5];
+
+        if (hashtags != null) {
+            for (int i = 0; i < Math.min(hashtags.length, 5); i++) {
+                fixedHashtags[i] = hashtags[i];
+            }
+        }
+
+        ArrayList<String> hashtagList = new ArrayList<>(Arrays.asList(fixedHashtags));
+        Set<String> uniqueSet = new HashSet<>(hashtagList);
+
+        uniqueSet.remove(null);
+
+        return new ArrayList<>(uniqueSet);
+    }
+
+    public LinkedList<String> findTrendingPosts(ArrayList<String> posts, HashMap<String, Integer> postEngagement) {
+        LinkedList<String> trendingPosts = new LinkedList<>();
+
+        if (posts != null && postEngagement != null) {
+            for (String post : posts) {
+                Integer engagement = postEngagement.get(post);
+                if (engagement != null && engagement > 500) {
+                    trendingPosts.add(post);
+                }
+            }
+        }
+
+        return trendingPosts;
+    }
+
+    public LinkedHashSet<String> getUniqueAuthors(String... authors) {
+        LinkedHashSet<String> uniqueAuthors = new LinkedHashSet<>();
+
+        if (authors != null) {
+            for (String author : authors) {
+                if (author != null) {
+                    uniqueAuthors.add(author);
+                }
+            }
+        }
+
+        return uniqueAuthors;
+    }
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        PostManager manager = new PostManager();
 
-        System.out.println("STUDENT INFORMATION");
-        System.out.print("Student ID: ");
-        String studentId = scanner.nextLine();
-        System.out.print("First Name: ");
-        String firstName = scanner.nextLine();
-        System.out.print("Last Name: ");
-        String lastName = scanner.nextLine();
-        System.out.print("Course: ");
-        String course = scanner.nextLine();
-        System.out.print("Section: ");
-        String section = scanner.nextLine();
+        // pagc-alculate sa engagement score
+        int engagementScore = manager.calculateEngagement(150, 75, 25);
+        String category = manager.getCategoryRating(engagementScore);
 
-        System.out.println("\nSTUDENT INFORMATION");
-        System.out.println("Student ID: " + studentId);
-        System.out.println("Student Name: " + firstName + " " + lastName);
-        System.out.println("Course: " + course);
-        System.out.println("Section: " + section);
+        // display post stats using proper method ovelroading
+        System.out.println("=== Social Media Post Manager ===");
+        manager.displayPostStats("Java Programming Tips", engagementScore, category);
+        System.out.println();
 
-        System.out.println("\nEnter Student Scores: ");
-        System.out.print("Midterm Exam Score (out of 100): ");
-        int midtermExam = scanner.nextInt();
-        System.out.print("Final Exam Score (out of 100): ");
-        int finalExam = scanner.nextInt();
-        System.out.print("Project Score ( out of 100): ");
-        int project = scanner.nextInt();
-        System.out.print("Attendance Percentage (out of 100): ");
-        int attendance = scanner.nextInt();
+        // manage hashtags
+        String[] hashtags = {"#java", "#coding", "#programming", "#java", "#tips"};
+        ArrayList<String> uniqueHashtags = manager.manageHashtags(hashtags);
+        System.out.println("Unique Hashtags: " + uniqueHashtags);
 
-        int totalScore = midtermExam + finalExam + project + attendance;
-        double average = totalScore / 400.0 * 100;
+        // mangita ug trending post
+        ArrayList<String> posts = new ArrayList<>();
+        posts.add("Advanced Java Tutorial");
+        posts.add("Spring Boot Guide");
 
-        String status = (average >= 75) ? "PASSED" : "FAILED";
+        HashMap<String, Integer> postEngagement = new HashMap<>();
+        postEngagement.put("Advanced Java Tutorial", 750);
+        postEngagement.put("Spring Boot Guide", 1200);
 
-        System.out.println("\nSTUDENT SCORE");
-        System.out.println("Midterm Exam Score: " + midtermExam);
-        System.out.println("Final Exam Score: " + finalExam);
-        System.out.println("Project Score: " + project);
-        System.out.println("Attendance Score: " + attendance);
-        System.out.printf("\nAverage Score: %.2f\n", average);
-        System.out.println("Remarks: " + status);
+        LinkedList<String> trendingPosts = manager.findTrendingPosts(posts, postEngagement);
+        System.out.println("Trending Posts: " + trendingPosts);
 
-        scanner.close();
-
+        // para sa unique authors
+        LinkedHashSet<String> uniqueAuthors = manager.getUniqueAuthors("Alice", "Bob", "Charlie");
+        System.out.println("Unique Authors: " + uniqueAuthors);
     }
 }
