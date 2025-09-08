@@ -103,13 +103,11 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        // display results
         System.out.println(order1.displayOrder());
         System.out.println(order2.displayOrder());
         System.out.println(order3.displayOrder());
         System.out.println("Total orders created: " + Order.getTotalOrders());
 
-        // find and display the order with highest total amount
         Order largestOrder = null;
         double largestTotal = 0.0;
         for (Order order : new Order[]{order1, order2, order3}) {
