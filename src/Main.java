@@ -1,112 +1,154 @@
-import java.util.ArrayList;
+class Employee {
+    protected String name;
+    protected int employeeId;
+    protected double baseSalary;
+    protected String department;
 
-class Book {
-    // instance variables for each book
-    private String title;
-    private String author;
-    private ArrayList<Integer> ratings; // Stores all ratings for this book
-    private static int totalBooks = 0;  // Shared across all Book instances
-
-    // constructor to initialize a new book
-    public Book(String title, String author) {
-        this.title = title;
-        this.author = author;
-        this.ratings = new ArrayList<>();
-        totalBooks++; // Increment the shared book counter
+    public Employee(String name, int employeeId, double baseSalary, String department) {
+        this.name = name;
+        this.employeeId = employeeId;
+        this.baseSalary = baseSalary;
+        this.department = department;
+        System.out.println("Employee " + name + " has been hired in " + department + " department");
     }
 
-    // add a single rating with validation
-    public void addRating(int rating) throws IllegalArgumentException {
-        if (rating < 1 || rating > 5) throw new IllegalArgumentException("Invalid rating: must be 1-5 stars");
-        ratings.add(rating);
+    public void displayInfo() {
+        System.out.println("Employee ID: " + employeeId);
+        System.out.println("Name: " + name);
+        System.out.println("Department: " + department);
+        System.out.println("Base Salary: $" + baseSalary);
     }
 
-    // calculate average rating of all reviews
-    public double getAverageRating() {
-        if (ratings.isEmpty()) return 0.0; // Handle case with no ratings
-        int sum = 0;
-        for (int rating : ratings) sum += rating;
-        return (double) sum / ratings.size();
+    public double calculateSalary() {
+        return baseSalary;
     }
 
-    // convert average rating to a popularity category
-    public String getPopularityLevel() {
-        if (ratings.isEmpty()) return "No ratings";
-        double avg = getAverageRating();
-        if (avg >= 4.5) return "Excellent";
-        if (avg >= 3.5) return "Good";
-        if (avg >= 2.5) return "Average";
-        if (avg >= 1.5) return "Poor";
-        return "Terrible";
+    public void work() {
+        System.out.println(name + " is working on general tasks");
+    }
+}
+
+class Manager extends Employee {
+    private double bonus;
+    private int teamSize;
+
+    public Manager(String name, int employeeId, double baseSalary, String department,
+                   double bonus, int teamSize) {
+        super(name, employeeId, baseSalary, department);
+        this.bonus = bonus;
+        this.teamSize = teamSize;
+        System.out.println(name + " has been promoted to Manager");
     }
 
-    // add multiple ratings at once using varargs
-    public void addMultipleRatings(int... ratings) {
-        for (int rating : ratings) {
-            try {
-                addRating(rating); // Reuse our single rating method
-            } catch (IllegalArgumentException e) {
-            }
-        }
+    @Override
+    public double calculateSalary() {
+        return baseSalary + bonus;
     }
 
-    // getter methods
-    public static int getTotalBooks() { return totalBooks; }
-    public String getTitle() { return title; }
-    public String getAuthor() { return author; }
-
-    // display book information in a formatted string
-    public String displayBook() {
-        return String.format("Book: %s by %s, Average Rating: %.1f, Level: %s",
-                title, author, getAverageRating(), getPopularityLevel());
+    @Override
+    public void work() {
+        super.work();
+        System.out.println(name + " is managing a team of " + teamSize + " employees");
     }
-    public String hdisplayBook() {
-        return String.format("Highest rated book: %s by %s (%.1f)",
-        title, author, getAverageRating());
+
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Bonus: $" + bonus);
+        System.out.println("Team Size: " + teamSize);
+        System.out.println("Total Salary: $" + calculateSalary());
+    }
+}
+
+class Developer extends Employee {
+    private String programmingLanguage;
+    private int projectsCompleted;
+
+    public Developer(String name, int employeeId, double baseSalary, String department,
+                     String programmingLanguage, int projectsCompleted) {
+        super(name, employeeId, baseSalary, department);
+        this.programmingLanguage = programmingLanguage;
+        this.projectsCompleted = projectsCompleted;
+        System.out.println(name + " joined as a " + programmingLanguage + " Developer");
+    }
+
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (projectsCompleted * 1000);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(name + " is coding in " + programmingLanguage);
+    }
+
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Programming Language: " + programmingLanguage);
+        System.out.println("Projects Completed: " + projectsCompleted);
+        System.out.println("Total Salary: $" + calculateSalary());
+    }
+}
+
+class Intern extends Employee {
+    private String university;
+    private boolean isFullTime;
+
+    public Intern(String name, int employeeId, double baseSalary, String department,
+                  String university, boolean isFullTime) {
+        super(name, employeeId, baseSalary, department);
+        this.university = university;
+        this.isFullTime = isFullTime;
+        System.out.println("Intern " + name + " from " + university + " has started");
+    }
+
+    @Override
+    public double calculateSalary() {
+        return baseSalary * 0.5;
+    }
+
+    @Override
+    public void work() {
+        System.out.println(name + " is learning and assisting with tasks");
+    }
+
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("University: " + university);
+        System.out.println("Full Time: " + isFullTime);
+        System.out.println("Total Salary: $" + calculateSalary());
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        // create three different books
-        Book book1 = new Book("Java Programming", "John Smith");
-        Book book2 = new Book("Data Structures", "Alice Brown");
-        Book book3 = new Book("Web Development", "Bob Wilson");
+        System.out.println("=== EMPLOYEE MANAGEMENT SYSTEM ===\n");
 
-        book1.addMultipleRatings(4, 4, 4, 4);
+        System.out.println("--- Creating Employees ---");
+        Manager manager = new Manager("Alice Smith", 2001, 80000, "Engineering", 15000, 8);
+        Developer developer = new Developer("Bob Johnson", 2002, 70000, "Engineering", "Java", 5);
+        Intern intern = new Intern("Charlie Brown", 2003, 30000, "Engineering", "Tech University", true);
 
-        book2.addMultipleRatings(5, 5, 4, 4, 3);
+        System.out.println("\n--- Testing Employee Details ---");
 
-        book3.addMultipleRatings(4, 3, 1, 3, 3);
+        System.out.println("\n=== MANAGER DETAILS ===");
+        manager.displayInfo();
+        System.out.println("\nWork Activity:");
+        manager.work();
+        System.out.println("Monthly Salary: $" + (manager.calculateSalary() / 12));
 
-        book3.addMultipleRatings(5, 6, 0, 4, 7, 3);
-        System.out.println("=== Book Record System ===");
-        System.out.println("");
-        System.out.println("Adding books and ratings...");
-        System.out.println("Rating 4 added successfully");
-        System.out.println("Ratings added: 5, 4, 3, 5");
-        System.out.println("Error: Invalid rating: must be 1-5 stars");
+        System.out.println("\n=== DEVELOPER DETAILS ===");
+        developer.displayInfo();
+        System.out.println("\nWork Activity:");
+        developer.work();
+        System.out.println("Monthly Salary: $" + (developer.calculateSalary() / 12));
 
-        // display all book information
-        System.out.println("\nBook Results:");
-        System.out.println(book1.displayBook());
-        System.out.println(book2.displayBook());
-        System.out.println(book3.displayBook());
-
-        // shows total books created using static method
-        System.out.println("\nTotal books created: " + Book.getTotalBooks());
-
-        // finds the book with the highest average rating
-        Book highest = book1;
-        if (book2.getAverageRating() > highest.getAverageRating()) highest = book2;
-        if (book3.getAverageRating() > highest.getAverageRating()) highest = book3;
-        System.out.println(highest.hdisplayBook());
-
+        System.out.println("\n=== INTERN DETAILS ===");
+        intern.displayInfo();
+        System.out.println("\nWork Activity:");
+        intern.work();
+        System.out.println("Monthly Salary: $" + (intern.calculateSalary() / 12));
     }
 }
-
-
-
-
-
-
